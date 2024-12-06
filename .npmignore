@@ -1,0 +1,56 @@
+# Source
+src/
+tests/
+*.test.ts
+
+# Development configs
+.eslintrc.js
+.prettierrc
+jest.config.js
+tsconfig.json
+.editorconfig
+.gitignore
+.npmignore
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Build artifacts
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Development tools
+.github/
+.travis.yml
+.gitlab-ci.yml
+.circleci/
+
+# Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
