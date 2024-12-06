@@ -11,7 +11,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "pub": "npm version patch && npm publish --access public"
   },
   "keywords": [
     "vector",
