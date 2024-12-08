@@ -4,6 +4,14 @@
   "description": "A vector-based tag system for efficient similarity search and retrieval",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkctou/embeddb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gkctou/embeddb/issues"
+  },
+  "homepage": "https://github.com/gkctou/embeddb#readme",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -36,6 +44,12 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "README.de.md",
+    "README.es.md",
+    "README.fr.md",
+    "README.ja.md",
+    "README.ko.md",
+    "README.zh-TW.md"
   ]
 }
