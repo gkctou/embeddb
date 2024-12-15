@@ -14,7 +14,8 @@ Hey there! Welcome to EmbedDB! This is a super cool vector-based tag system writ
 - Full TypeScript support (Type-safe, developer-friendly!)
 - Memory-efficient sparse vector implementation (Your RAM will thank you!)
 - Import/Export functionality (Save and restore your indexes!)
-- Pagination support for large result sets (Get results in chunks!)
+- Pagination support with filter-first approach (Get filtered results in chunks!)
+- Advanced filtering system (Filter first, sort by similarity!)
 
 ## Quick Start
 
@@ -197,17 +198,20 @@ Under the hood, EmbedDB uses several clever techniques:
 2. **Cosine Similarity**
    - Measures angle between vectors
    - Range: -1 to 1 (we normalize to 0 to 1)
+   - Used only for sorting, not filtering
    - Ideal for high-dimensional sparse spaces
 
-3. **Caching Strategy**
-   - In-memory cache for query results
-   - Cache invalidation on data changes
-   - Configurable pagination
+3. **Filter-First Architecture**
+   - Filters are applied before similarity calculation
+   - Results quantity determined by filters only
+   - Similarity scores used purely for sorting
+   - Efficient for large datasets
 
-4. **Type Safety**
-   - Strict TypeScript types
-   - Runtime type checking
-   - Comprehensive error handling
+4. **Category Weight Management**
+   - Fine-grained control over category importance
+   - Individual and batch weight updates
+   - Default weights for unknown categories
+   - Automatic cache invalidation on weight changes
 
 ## License
 

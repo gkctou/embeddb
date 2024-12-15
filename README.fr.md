@@ -14,7 +14,8 @@ Salut ! Bienvenue sur EmbedDB ! C'est un système de tags basé sur les vecteurs
 - 📝 Support complet de TypeScript (Sûr en termes de types, convivial pour les développeurs !)
 - 🎯 Implémentation efficace de vecteurs creux (Votre RAM vous remerciera !)
 - 🔄 Fonctionnalité d'import/export (Sauvegardez et restaurez vos index !)
-- 📦 Support de pagination (Obtenez les résultats par lots !)
+- 📊 Support de pagination avec approche filtre-d'abord (Obtenez les résultats filtrés par lots !)
+- 🔬 Système de filtrage avancé (Filtrez d'abord, triez par similarité !)
 
 ## 🎮 Démarrage Rapide
 
@@ -177,6 +178,7 @@ EmbedDB utilise la magie vectorielle pour rendre possible la recherche par simil
 
 3. 🎯 **Calcul de Similarité**:
    - Utilise la similarité cosinus pour mesurer les relations vectorielles
+   - S'applique uniquement aux résultats filtrés
    - Cela aide à trouver les éléments les plus similaires
 
 4. 🚀 **Optimisations de Performance**:
@@ -196,17 +198,7 @@ Sous le capot, EmbedDB utilise plusieurs techniques intelligentes :
 2. **Similarité Cosinus**
    - Mesure l'angle entre les vecteurs
    - Plage : -1 à 1 (normalisé de 0 à 1)
-   - Idéal pour les espaces creux de haute dimension
-
-3. **Stratégie de Cache**
-   - Cache en mémoire pour les résultats de requêtes
-   - Invalidation du cache lors des changements de données
-   - Pagination configurable
-
-4. **Sécurité des Types**
-   - Types TypeScript stricts
-   - Vérification des types à l'exécution
-   - Gestion complète des erreurs
+   - Utilisé uniquement pour le tri, pas pour le filtrage
 
 ## 📝 Licence
 

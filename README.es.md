@@ -14,7 +14,8 @@
 - 📝 Soporte completo de TypeScript (¡Seguro en tipos, amigable para desarrolladores!)
 - 🎯 Implementación eficiente de vectores dispersos (¡Tu RAM te lo agradecerá!)
 - 🔄 Funcionalidad de importación/exportación (¡Guarda y restaura tus índices!)
-- 📊 Soporte de paginación (¡Obtén resultados en lotes!)
+- 📊 Soporte de paginación con enfoque filtro-primero (¡Obtén resultados filtrados en lotes!)
+- 🔬 Sistema avanzado de filtrado (¡Filtra primero, ordena por similitud!)
 
 ## 🎮 Inicio Rápido
 
@@ -177,6 +178,7 @@ EmbedDB utiliza magia vectorial para hacer posible la búsqueda por similitud:
 
 3. 🎯 **Cálculo de Similitud**:
    - Usa similitud coseno para medir relaciones vectoriales
+   - Se aplica solo a los resultados filtrados
    - Esto ayuda a encontrar los elementos más similares
 
 4. 🚀 **Optimizaciones de Rendimiento**:
@@ -196,17 +198,7 @@ Bajo el capó, EmbedDB utiliza varias técnicas inteligentes:
 2. **Similitud Coseno**
    - Mide el ángulo entre vectores
    - Rango: -1 a 1 (normalizado a 0 a 1)
-   - Ideal para espacios dispersos de alta dimensión
-
-3. **Estrategia de Caché**
-   - Caché en memoria para resultados de consultas
-   - Invalidación de caché en cambios de datos
-   - Paginación configurable
-
-4. **Seguridad de Tipos**
-   - Tipos estrictos de TypeScript
-   - Verificación de tipos en tiempo de ejecución
-   - Manejo integral de errores
+   - Se usa solo para ordenar, no para filtrar
 
 ## 📝 Licencia
 

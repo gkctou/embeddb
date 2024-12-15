@@ -14,7 +14,8 @@ Hallo! Willkommen bei EmbedDB! Dies ist ein richtig cooles vektorbasiertes Tag-S
 - Vollständige TypeScript-Unterstützung (Typsicher, entwicklerfreundlich!)
 - Speichereffiziente Sparse-Vektor-Implementierung (Ihr RAM wird es Ihnen danken!)
 - Import/Export-Funktionalität (Speichern und Wiederherstellen Ihrer Indizes!)
-- Paginierung (Ergebnisse in Paketen abrufen!)
+- Filter-First Paginierung (Gefilterte Ergebnisse in Paketen abrufen!)
+- Fortgeschrittenes Filtersystem (Erst filtern, dann nach Ähnlichkeit sortieren!)
 
 ## Schnellstart
 
@@ -182,6 +183,7 @@ EmbedDB nutzt Vektor-Magie für die Ähnlichkeitssuche:
 
 3.  **Ähnlichkeitsberechnung**:
     - Verwendet Kosinus-Ähnlichkeit zur Messung von Vektorbeziehungen
+    - Wird nur auf gefilterte Ergebnisse angewendet
     - Hilft bei der Findung der ähnlichsten Elemente
 
 4.  **Performance-Optimierungen**:
@@ -201,17 +203,7 @@ Unter der Haube verwendet EmbedDB mehrere clevere Techniken:
 2. **Kosinus-Ähnlichkeit**
    - Misst den Winkel zwischen Vektoren
    - Bereich: -1 bis 1 (normalisiert auf 0 bis 1)
-   - Ideal für hochdimensionale Sparse-Räume
-
-3. **Cache-Strategie**
-   - In-Memory-Cache für Abfrageergebnisse
-   - Cache-Invalidierung bei Datenänderungen
-   - Konfigurierbare Paginierung
-
-4. **Typsicherheit**
-   - Strikte TypeScript-Typen
-   - Laufzeit-Typüberprüfung
-   - Umfassende Fehlerbehandlung
+   - Wird nur zum Sortieren verwendet, nicht zum Filtern
 
 ## Lizenz
 

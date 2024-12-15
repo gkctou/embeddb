@@ -14,7 +14,8 @@
 - 완벽한 TypeScript 지원 (타입 안전, 개발자 친화적!)
 - 메모리 효율적인 희소 벡터 구현 (RAM을 아낍니다!)
 - 임포트/엑스포트 기능 (인덱스 저장 및 복원!)
-- 페이지네이션 지원 (대량의 결과를 나눠서 가져오기!)
+- 필터 우선 페이지네이션 지원 (필터링된 결과를 나눠서 가져오기!)
+- 고급 필터링 시스템 (필터 먼저, 유사도로 정렬!)
 
 ## 빠른 시작
 
@@ -52,15 +53,17 @@ const item = {
 system.addItem(item);
 
 // 유사 아이템 검색
-const queryTags: Tag[] = [
-    { category: 'color', value: 'red', confidence: 1.0 }  // 빨간색 찾기
-];
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
 
 // 색상 매칭의 중요도 설정
 system.setCategoryWeight('color', 2.0); // 색상 매칭의 중요도를 2배로
 
 // 페이지네이션으로 쿼리
-const results = system.query(queryTags, { page: 1, size: 10 }); // 처음 10개 결과 가져오기
+const results = system.query(query.tags, { page: 1, size: 10 }); // 처음 10개 결과 가져오기
 
 // 인덱스 내보내기
 const exportedData = system.exportIndex();
@@ -141,27 +144,6 @@ newSystem.importIndex(exportedData);
   system.setCategoryWeight('color', 2.0);
   ```
 
-## 개발 가이드
-
-개발에 참여하고 싶으신가요? 훌륭합니다! 자주 사용하는 명령어를 소개합니다:
-
-```bash
-# 의존성 설치
-npm install
-
-# 프로젝트 빌드
-npm run build
-
-# 테스트 실행 (테스트 최고!)
-npm test
-
-# 코드 스타일 검사
-npm run lint
-
-# 코드 포맷팅 (깔끔한 코드로!)
-npm run format
-```
-
 ## 작동 원리
 
 EmbedDB는 벡터 기술로 유사성 검색을 구현합니다:
@@ -176,6 +158,7 @@ EmbedDB는 벡터 기술로 유사성 검색을 구현합니다:
 
 3. 🎯 **유사도 계산**:
    - 코사인 유사도로 벡터 간의 관계 측정
+   - 필터링된 결과에 대해서만 적용
    - 가장 유사한 아이템 발견
 
 4. 🚀 **성능 최적화**:
@@ -195,7 +178,7 @@ EmbedDB는 다음 기술을 활용합니다:
 2. **코사인 유사도**
    - 벡터 간의 각도 측정
    - 범위: -1에서 1 (0에서 1로 정규화)
-   - 고차원 희소 공간에 이상적
+   - 필터링이 아닌 정렬에만 사용
 
 3. **캐시 전략**
    - 쿼리 결과의 메모리 캐시
