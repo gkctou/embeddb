@@ -7,11 +7,14 @@
 ## ✨ Características
 
 - 🔍 Potente búsqueda de similitud basada en vectores
-- ⚖️ Soporte para etiquetas ponderadas (¡Si dices que es importante, lo es!)
-- 🚄 Procesamiento por lotes (¡Maneja grandes cantidades de datos de manera eficiente!)
+- ⚖️ Etiquetas con pesos (¡Si dices que es importante, lo es!)
+- ⚖️ Pesos por categoría (¡Control preciso de la importancia de cada categoría!)
+- 🚄 Operaciones por lotes (¡Maneja grandes cantidades de datos eficientemente!)
 - 💾 Caché de consultas incorporado (¡Consultas repetidas a la velocidad del rayo!)
-- 📝 Soporte completo de TypeScript (¡Desarrollo seguro con tipos!)
-- 🎯 Implementación eficiente de vectores dispersos (¡Optimización de memoria!)
+- 📝 Soporte completo de TypeScript (¡Seguro en tipos, amigable para desarrolladores!)
+- 🎯 Implementación eficiente de vectores dispersos (¡Tu RAM te lo agradecerá!)
+- 🔄 Funcionalidad de importación/exportación (¡Guarda y restaura tus índices!)
+- 📊 Soporte de paginación (¡Obtén resultados en lotes!)
 
 ## 🎮 Inicio Rápido
 
@@ -48,12 +51,25 @@ const item = {
 };
 system.addItem(item);
 
-// Buscar elementos similares
-const queryTags: Tag[] = [
-    { category: 'color', value: 'red', confidence: 1.0 }  // Buscar cosas rojas
-];
-const results = system.query(queryTags, { page: 1, pageSize: 10 });
-```
+// Busquemos elementos similares
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
+
+// Configurar pesos de categoría para priorizar coincidencias de color
+system.setCategoryWeight('color', 2.0); // Las coincidencias de color son el doble de importantes
+
+// Consulta con paginación
+const results = system.query(query.tags, { page: 1, size: 10 }); // Obtener los primeros 10 resultados
+
+// Exportar el índice para uso posterior
+const exportedData = system.exportIndex();
+
+// Importar el índice en otra instancia
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 
 ## 🛠 Referencia de la API
 
@@ -118,6 +134,12 @@ const results = system.query(queryTags, { page: 1, pageSize: 10 });
   const data = system.exportIndex();
   // ... más tarde ...
   system.importIndex(data);
+  ```
+
+- ⚖️ `setCategoryWeight(category: string, weight: number)`: Establecer peso de categoría
+  ```typescript
+  // Priorizar coincidencias de color
+  system.setCategoryWeight('color', 2.0);
   ```
 
 ## 🔧 Guía de Desarrollo

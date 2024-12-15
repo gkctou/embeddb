@@ -8,10 +8,13 @@ Hey there! Welcome to EmbedDB! This is a super cool vector-based tag system writ
 
 - Powerful vector-based similarity search
 - Weighted tags with confidence scores (You say it's important? It's important!)
+- Category weights for fine-tuned search (Control which categories matter more!)
 - Batch operations (Handle lots of data at once, super efficient!)
 - Built-in query caching (Repeated queries? Lightning fast!)
 - Full TypeScript support (Type-safe, developer-friendly!)
 - Memory-efficient sparse vector implementation (Your RAM will thank you!)
+- Import/Export functionality (Save and restore your indexes!)
+- Pagination support for large result sets (Get results in chunks!)
 
 ## Quick Start
 
@@ -48,11 +51,25 @@ const item = {
 };
 system.addItem(item);
 
+// Set category weights to prioritize color matches
+system.setCategoryWeight('color', 2.0); // Color matches are twice as important
+
 // Let's find similar items
-const queryTags: Tag[] = [
-    { category: 'color', value: 'red', confidence: 1.0 }  // Looking for red stuff
-];
-const results = system.query(queryTags, { page: 1, pageSize: 10 });
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
+
+// Query with pagination
+const results = system.query(query.tags, { page: 1, size: 10 }); // Get first 10 results
+
+// Export the index for later use
+const exportedData = system.exportIndex();
+
+// Import the index in another instance
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 ```
 
 ## API Reference
@@ -94,7 +111,7 @@ This is our superhero! It handles all the operations.
   // Find similar stuff
   const results = system.query([
     { category: 'style', value: 'modern', confidence: 0.9 }
-  ], { page: 1, pageSize: 20 });
+  ], { page: 1, size: 20 });
   ```
 
 - `queryFirst(tags: Tag[])`: Get the most similar item
@@ -118,6 +135,12 @@ This is our superhero! It handles all the operations.
   const data = system.exportIndex();
   // ... later ...
   system.importIndex(data);
+  ```
+
+- `setCategoryWeight(category: string, weight: number)`: Set category weight
+  ```typescript
+  // Make color matches twice as important
+  system.setCategoryWeight('color', 2.0);
   ```
 
 ## Development

@@ -8,10 +8,13 @@ Salut ! Bienvenue sur EmbedDB ! C'est un système de tags basé sur les vecteurs
 
 - 🔍 Puissante recherche par similarité basée sur les vecteurs
 - ⚖️ Support des tags pondérés (Si vous dites que c'est important, ça l'est !)
-- 🚄 Traitement par lots (Gérez efficacement de grandes quantités de données !)
+- ⚖️ Poids par catégorie (Contrôle précis de l'importance des catégories !)
+- 🚄 Opérations par lots (Gérez efficacement de grandes quantités de données !)
 - 💾 Cache de requêtes intégré (Requêtes répétées à la vitesse de l'éclair !)
-- 📝 Support complet de TypeScript (Développement sûr avec typage !)
-- 🎯 Implémentation efficace de vecteurs creux (Optimisation de la mémoire !)
+- 📝 Support complet de TypeScript (Sûr en termes de types, convivial pour les développeurs !)
+- 🎯 Implémentation efficace de vecteurs creux (Votre RAM vous remerciera !)
+- 🔄 Fonctionnalité d'import/export (Sauvegardez et restaurez vos index !)
+- 📦 Support de pagination (Obtenez les résultats par lots !)
 
 ## 🎮 Démarrage Rapide
 
@@ -48,12 +51,25 @@ const item = {
 };
 system.addItem(item);
 
-// Rechercher des éléments similaires
-const queryTags: Tag[] = [
-    { category: 'color', value: 'red', confidence: 1.0 }  // Chercher des choses rouges
-];
-const results = system.query(queryTags, { page: 1, pageSize: 10 });
-```
+// Configurer les poids des catégories pour prioriser les correspondances de couleur
+system.setCategoryWeight('color', 2.0); // Les correspondances de couleur sont deux fois plus importantes
+
+// Recherchons des éléments similaires
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
+
+// Requête avec pagination
+const results = system.query(query.tags, { page: 1, size: 10 }); // Obtenir les 10 premiers résultats
+
+// Exporter l'index pour une utilisation ultérieure
+const exportedData = system.exportIndex();
+
+// Importer l'index dans une autre instance
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 
 ## 🛠 Référence de l'API
 
@@ -118,6 +134,12 @@ C'est notre héros ! Il gère toutes les opérations.
   const data = system.exportIndex();
   // ... plus tard ...
   system.importIndex(data);
+  ```
+
+- ⚖️ `setCategoryWeight(category: string, weight: number)`: Définir le poids d'une catégorie
+  ```typescript
+  // Donner plus d'importance aux correspondances de couleur
+  system.setCategoryWeight('color', 2.0);
   ```
 
 ## 🔧 Guide de Développement

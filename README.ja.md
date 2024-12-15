@@ -8,10 +8,13 @@
 
 - 🔍 パワフルなベクトルベース類似性検索
 - ⚖️ 重み付きタグのサポート（重要度に応じた検索が可能！）
+- 📈 カテゴリーの重み付け（カテゴリーの重要度を細かく制御！）
 - 🚄 バッチ処理機能（大量のデータを一度に効率的に処理！）
 - 💾 クエリキャッシュ機能（繰り返しの検索が超高速！）
 - 📝 完全なTypeScriptサポート（型安全な開発環境！）
 - 🎯 効率的なスパースベクトル実装（メモリ効率の最適化！）
+- 🔄 インポート/エクスポート機能（インデックスの保存と復元！）
+- 📊 ページネーションサポート（大量の結果を分割取得！）
 
 ## 🎮 クイックスタート
 
@@ -48,12 +51,25 @@ const item = {
 };
 system.addItem(item);
 
-// 類似アイテムの検索
-const queryTags: Tag[] = [
-    { category: 'color', value: 'red', confidence: 1.0 }  // 赤いものを探す
-];
-const results = system.query(queryTags, { page: 1, pageSize: 10 });
-```
+// 類似アイテムを検索してみましょう
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
+
+// カラーマッチの重要度を高く設定
+system.setCategoryWeight('color', 2.0); // カラーマッチの重要度を2倍に
+
+// ページネーション付きクエリ
+const results = system.query(query.tags, { page: 1, size: 10 }); // 最初の10件を取得
+
+// インデックスをエクスポート
+const exportedData = system.exportIndex();
+
+// 別のインスタンスでインポート
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 
 ## 🛠 API リファレンス
 
@@ -118,6 +134,12 @@ const results = system.query(queryTags, { page: 1, pageSize: 10 });
   const data = system.exportIndex();
   // ... 後で ...
   system.importIndex(data);
+  ```
+
+- 📈 `setCategoryWeight(category: string, weight: number)`: カテゴリーの重み付け
+  ```typescript
+  // カラーマッチの重要度を2倍に
+  system.setCategoryWeight('color', 2.0);
   ```
 
 ## 🔧 開発ガイド

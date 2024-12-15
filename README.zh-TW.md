@@ -1,19 +1,22 @@
-# 🚀 EmbedDB
+# EmbedDB
 
 [English](README.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-嘿！歡迎來到 EmbedDB！這是一個超酷的向量化標籤系統，用 TypeScript 寫成的。它能讓你輕鬆地進行相似度搜尋，就像有個AI助手在幫你找東西一樣！ 🎯
+嘿！歡迎來到 EmbedDB！這是一個超酷的向量化標籤系統，用 TypeScript 寫成的。它能讓你輕鬆地進行相似度搜尋，就像有個AI助手在幫你找東西一樣！ 
 
-## ✨ 特色功能
+## 特色功能
 
-- 🔍 超強的向量化相似度搜尋
-- ⚖️ 支援帶權重的標籤（你說這個標籤很重要，那它就很重要！）
-- 🚄 批次處理功能（一次處理一堆資料，效能棒棒！）
-- 💾 內建查詢快取（重複的查詢？快得跟閃電一樣！）
-- 📝 完整的 TypeScript 支援（型別安全，開發安心！）
-- 🎯 高效的稀疏向量實現（省記憶體的好幫手）
+- 強大的向量相似度搜尋
+- 支援權重標籤 (你說重要就是重要！)
+- 類別權重調整 (精確控制不同類別的重要性！)
+- 批次處理 (一次處理大量資料，超級高效！)
+- 內建查詢快取 (重複查詢？閃電般快速！)
+- 完整 TypeScript 支援 (型別安全，開發友善！)
+- 記憶體效率的稀疏向量實作 (你的記憶體會感謝你！)
+- 匯入/匯出功能 (保存並還原你的索引！)
+- 分頁支援 (大量結果分批獲取！)
 
-## 🎮 快速開始
+## 快速開始
 
 首先，安裝套件：
 ```bash
@@ -53,9 +56,22 @@ const queryTags: Tag[] = [
     { category: 'color', value: 'red', confidence: 1.0 }  // 我想找紅色的東西
 ];
 const results = system.query(queryTags, { page: 1, pageSize: 10 });
+
+// 設定類別權重，讓顏色匹配更重要
+system.setCategoryWeight('color', 2.0); // 顏色匹配的重要性加倍
+
+// 使用分頁查詢
+const results = system.query(queryTags, { page: 1, size: 10 }); // 獲取前10個結果
+
+// 匯出索引以供後續使用
+const exportedData = system.exportIndex();
+
+// 在另一個實例中匯入索引
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 ```
 
-## 🛠 API 說明
+## API 說明
 
 ### TagVectorSystem 類別
 
@@ -120,7 +136,7 @@ const results = system.query(queryTags, { page: 1, pageSize: 10 });
   system.importIndex(data);
   ```
 
-## 🔧 開發指南
+## 開發指南
 
 想要參與開發？太棒了！這裡有一些常用的指令：
 
@@ -141,7 +157,7 @@ npm run lint
 npm run format
 ```
 
-## 🤔 運作原理
+## 運作原理
 
 EmbedDB 使用向量化技術來實現相似度搜尋：
 
@@ -162,7 +178,7 @@ EmbedDB 使用向量化技術來實現相似度搜尋：
    - 實作查詢快取來加速重複查詢
    - 支援批次操作來提升效能
 
-## 🧪 技術細節
+## 技術細節
 
 在底層，EmbedDB 使用了一些巧妙的技術：
 
@@ -186,18 +202,18 @@ EmbedDB 使用向量化技術來實現相似度搜尋：
    - 執行時型別檢查
    - 全面的錯誤處理
 
-## 📝 授權條款
+## 授權條款
 
 MIT 授權 - 盡情使用，打造酷東西！
 
-## 🙋‍♂️ 需要幫助？
+## 需要幫助？
 
 有任何問題或建議？歡迎：
 - 開 Issue
 - 發 PR
 
-讓我們一起把 EmbedDB 變得更棒！ 🌟
+讓我們一起把 EmbedDB 變得更棒！ 
 
-## 🌟 給個星星！
+## 給個星星！
 
 如果你覺得 EmbedDB 很有用，給我們一顆星星吧！這能幫助其他人發現這個專案，也能激勵我們繼續改進它！

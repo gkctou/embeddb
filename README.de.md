@@ -1,19 +1,22 @@
-# 🚀 EmbedDB
+# EmbedDB
 
 [English](README.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-Hallo! Willkommen bei EmbedDB! Dies ist ein richtig cooles vektorbasiertes Tag-System, geschrieben in TypeScript. Es macht die Ähnlichkeitssuche so einfach, als hätte man einen KI-Assistenten, der einem beim Finden hilft! 🎯
+Hallo! Willkommen bei EmbedDB! Dies ist ein richtig cooles vektorbasiertes Tag-System, geschrieben in TypeScript. Es macht die Ähnlichkeitssuche so einfach, als hätte man einen KI-Assistenten, der einem beim Finden hilft! 
 
-## ✨ Funktionen
+## Funktionen
 
-- 🔍 Leistungsstarke vektorbasierte Ähnlichkeitssuche
-- ⚖️ Unterstützung für gewichtete Tags (Wenn du sagst, es ist wichtig, dann ist es wichtig!)
-- 🚄 Batch-Verarbeitung (Verarbeite große Datenmengen effizient!)
-- 💾 Integrierter Abfrage-Cache (Wiederholte Abfragen blitzschnell!)
-- 📝 Vollständige TypeScript-Unterstützung (Typsichere Entwicklung!)
-- 🎯 Effiziente Sparse-Vektor-Implementierung (Speicheroptimierung!)
+- Leistungsstarke vektorbasierte Ähnlichkeitssuche
+- Gewichtete Tags (Was Sie für wichtig halten, ist wichtig!)
+- Kategoriegewichtung (Präzise Kontrolle über die Wichtigkeit von Kategorien!)
+- Batch-Operationen (Verarbeiten Sie große Datenmengen effizient!)
+- Integrierter Query-Cache (Wiederholte Abfragen blitzschnell!)
+- Vollständige TypeScript-Unterstützung (Typsicher, entwicklerfreundlich!)
+- Speichereffiziente Sparse-Vektor-Implementierung (Ihr RAM wird es Ihnen danken!)
+- Import/Export-Funktionalität (Speichern und Wiederherstellen Ihrer Indizes!)
+- Paginierung (Ergebnisse in Paketen abrufen!)
 
-## 🎮 Schnellstart
+## Schnellstart
 
 Zuerst das Paket installieren:
 ```bash
@@ -53,9 +56,27 @@ const queryTags: Tag[] = [
     { category: 'color', value: 'red', confidence: 1.0 }  // Nach roten Dingen suchen
 ];
 const results = system.query(queryTags, { page: 1, pageSize: 10 });
+
+// Kategoriegewichte konfigurieren, um Farbübereinstimmungen zu priorisieren
+system.setCategoryWeight('color', 2.0); // Farbübereinstimmungen sind doppelt so wichtig
+
+// Abfrage mit Paginierung
+const query = {
+    tags: [
+        { category: 'color', value: 'red', confidence: 0.9 }
+    ]
+};
+const paginatedResults = system.query(query.tags, { page: 1, size: 10 }); // Die ersten 10 Ergebnisse abrufen
+
+// Index für spätere Verwendung exportieren
+const exportedData = system.exportIndex();
+
+// Index in einer anderen Instanz importieren
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 ```
 
-## 🛠 API-Referenz
+## API-Referenz
 
 ### TagVectorSystem Klasse
 
@@ -63,7 +84,7 @@ Das ist unser Held! Er handhabt alle Operationen.
 
 #### Hauptmethoden
 
-- 🏗 `buildIndex(tags: IndexTag[])`: Tag-Index aufbauen
+-  `buildIndex(tags: IndexTag[])`: Tag-Index aufbauen
   ```typescript
   // Definiere deine Tag-Welt!
   system.buildIndex([
@@ -72,7 +93,7 @@ Das ist unser Held! Er handhabt alle Operationen.
   ]);
   ```
 
-- ➕ `addItem(item: ItemTags)`: Ein Element hinzufügen
+-  `addItem(item: ItemTags)`: Ein Element hinzufügen
   ```typescript
   // Etwas Cooles hinzufügen
   system.addItem({
@@ -83,13 +104,13 @@ Das ist unser Held! Er handhabt alle Operationen.
   });
   ```
 
-- 📦 `addItemBatch(items: ItemTags[], batchSize?: number)`: Elemente im Batch hinzufügen
+-  `addItemBatch(items: ItemTags[], batchSize?: number)`: Elemente im Batch hinzufügen
   ```typescript
   // Mehrere Elemente auf einmal für bessere Performance!
   system.addItemBatch([item1, item2, item3], 10);
   ```
 
-- 🔍 `query(tags: Tag[], options?: QueryOptions)`: Nach ähnlichen Elementen suchen
+-  `query(tags: Tag[], options?: QueryOptions)`: Nach ähnlichen Elementen suchen
   ```typescript
   // Ähnliche Dinge finden
   const results = system.query([
@@ -97,7 +118,7 @@ Das ist unser Held! Er handhabt alle Operationen.
   ], { page: 1, pageSize: 20 });
   ```
 
-- 🎯 `queryFirst(tags: Tag[])`: Das ähnlichste Element finden
+-  `queryFirst(tags: Tag[])`: Das ähnlichste Element finden
   ```typescript
   // Nur den besten Treffer holen
   const bestMatch = system.queryFirst([
@@ -105,14 +126,14 @@ Das ist unser Held! Er handhabt alle Operationen.
   ]);
   ```
 
-- 📊 `getStats()`: Systemstatistiken abrufen
+-  `getStats()`: Systemstatistiken abrufen
   ```typescript
   // Systemstatistiken überprüfen
   const stats = system.getStats();
   console.log(`Gesamtanzahl Elemente: ${stats.totalItems}`);
   ```
 
-- 🔄 `exportIndex()` & `importIndex()`: Index-Daten exportieren/importieren
+-  `exportIndex()` & `importIndex()`: Index-Daten exportieren/importieren
   ```typescript
   // Daten für später speichern
   const data = system.exportIndex();
@@ -120,7 +141,13 @@ Das ist unser Held! Er handhabt alle Operationen.
   system.importIndex(data);
   ```
 
-## 🔧 Entwicklungsanleitung
+-  `setCategoryWeight(category: string, weight: number)`: Kategoriegewicht setzen
+  ```typescript
+  // Farbübereinstimmungen sind doppelt so wichtig
+  system.setCategoryWeight('color', 2.0);
+  ```
+
+## Entwicklungsanleitung
 
 Möchtest du beitragen? Super! Hier sind einige nützliche Befehle:
 
@@ -141,28 +168,28 @@ npm run lint
 npm run format
 ```
 
-## 🤔 Wie es funktioniert
+## Wie es funktioniert
 
 EmbedDB nutzt Vektor-Magie für die Ähnlichkeitssuche:
 
-1. 🏷 **Tag-Indexierung**:
-   - Jedes Kategorie-Wert-Paar wird auf eine eindeutige Vektorposition abgebildet
-   - Dies ermöglicht die Umwandlung von Tags in numerische Vektoren
+1.  **Tag-Indexierung**:
+    - Jedes Kategorie-Wert-Paar wird auf eine eindeutige Vektorposition abgebildet
+    - Dies ermöglicht die Umwandlung von Tags in numerische Vektoren
 
-2. 📊 **Vektor-Transformation**:
-   - Element-Tags werden in Sparse-Vektoren umgewandelt
-   - Konfidenzwerte werden als Vektorgewichte verwendet
+2.  **Vektor-Transformation**:
+    - Element-Tags werden in Sparse-Vektoren umgewandelt
+    - Konfidenzwerte werden als Vektorgewichte verwendet
 
-3. 🎯 **Ähnlichkeitsberechnung**:
-   - Verwendet Kosinus-Ähnlichkeit zur Messung von Vektorbeziehungen
-   - Hilft bei der Findung der ähnlichsten Elemente
+3.  **Ähnlichkeitsberechnung**:
+    - Verwendet Kosinus-Ähnlichkeit zur Messung von Vektorbeziehungen
+    - Hilft bei der Findung der ähnlichsten Elemente
 
-4. 🚀 **Performance-Optimierungen**:
-   - Sparse-Vektoren für Speichereffizienz
-   - Abfrage-Caching für Geschwindigkeit
-   - Batch-Operationen für besseren Durchsatz
+4.  **Performance-Optimierungen**:
+    - Sparse-Vektoren für Speichereffizienz
+    - Abfrage-Caching für Geschwindigkeit
+    - Batch-Operationen für besseren Durchsatz
 
-## 🧪 Technische Details
+## Technische Details
 
 Unter der Haube verwendet EmbedDB mehrere clevere Techniken:
 
@@ -186,18 +213,18 @@ Unter der Haube verwendet EmbedDB mehrere clevere Techniken:
    - Laufzeit-Typüberprüfung
    - Umfassende Fehlerbehandlung
 
-## 📝 Lizenz
+## Lizenz
 
 MIT-Lizenz - Nutze es frei, baue tolle Sachen!
 
-## 🙋‍♂️ Brauchst du Hilfe?
+## Brauchst du Hilfe?
 
 Fragen oder Vorschläge?
 - Öffne ein Issue
 - Reiche einen PR ein
 
-Lass uns EmbedDB noch besser machen! 🌟
+Lass uns EmbedDB noch besser machen! 
 
-## 🌟 Gib uns einen Stern!
+## Gib uns einen Stern!
 
 Wenn du EmbedDB nützlich findest, gib uns einen Stern! Das hilft anderen, dieses Projekt zu entdecken und motiviert uns, es weiter zu verbessern!

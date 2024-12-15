@@ -1,19 +1,22 @@
-# 🚀 EmbedDB
+# EmbedDB
 
 [English](README.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-안녕하세요! EmbedDB에 오신 것을 환영합니다! TypeScript로 작성된 벡터 기반 태그 시스템입니다. AI 어시스턴트가 검색을 도와주는 것처럼 유사성 검색을 쉽게 할 수 있습니다! 🎯
+안녕하세요! EmbedDB에 오신 것을 환영합니다! TypeScript로 작성된 벡터 기반 태그 시스템입니다. AI 어시스턴트가 검색을 도와주는 것처럼 유사성 검색을 쉽게 할 수 있습니다! 
 
-## ✨ 특징
+## 특징
 
-- 🔍 강력한 벡터 기반 유사성 검색
-- ⚖️ 가중치 태그 지원 (중요도에 따른 검색 가능!)
-- 🚄 배치 처리 기능 (대량의 데이터를 한 번에 효율적으로 처리!)
-- 💾 쿼리 캐시 기능 (반복 검색이 초고속!)
-- 📝 완벽한 TypeScript 지원 (타입 안전한 개발 환경!)
-- 🎯 효율적인 희소 벡터 구현 (메모리 효율 최적화!)
+- 강력한 벡터 기반 유사도 검색
+- 가중치 태그 지원 (중요하다고 하면 중요합니다!)
+- 카테고리 가중치 (카테고리별 중요도 세밀 제어!)
+- 배치 작업 (대량의 데이터를 한 번에 효율적으로!)
+- 내장 쿼리 캐싱 (반복 쿼리는 번개처럼 빠르게!)
+- 완벽한 TypeScript 지원 (타입 안전, 개발자 친화적!)
+- 메모리 효율적인 희소 벡터 구현 (RAM을 아낍니다!)
+- 임포트/엑스포트 기능 (인덱스 저장 및 복원!)
+- 페이지네이션 지원 (대량의 결과를 나눠서 가져오기!)
 
-## 🎮 빠른 시작
+## 빠른 시작
 
 먼저, 패키지를 설치합니다:
 ```bash
@@ -52,10 +55,22 @@ system.addItem(item);
 const queryTags: Tag[] = [
     { category: 'color', value: 'red', confidence: 1.0 }  // 빨간색 찾기
 ];
-const results = system.query(queryTags, { page: 1, pageSize: 10 });
+
+// 색상 매칭의 중요도 설정
+system.setCategoryWeight('color', 2.0); // 색상 매칭의 중요도를 2배로
+
+// 페이지네이션으로 쿼리
+const results = system.query(queryTags, { page: 1, size: 10 }); // 처음 10개 결과 가져오기
+
+// 인덱스 내보내기
+const exportedData = system.exportIndex();
+
+// 다른 인스턴스에서 가져오기
+const newSystem = new TagVectorSystem();
+newSystem.importIndex(exportedData);
 ```
 
-## 🛠 API 레퍼런스
+## API 레퍼런스
 
 ### TagVectorSystem 클래스
 
@@ -120,7 +135,13 @@ const results = system.query(queryTags, { page: 1, pageSize: 10 });
   system.importIndex(data);
   ```
 
-## 🔧 개발 가이드
+- 📈 `setCategoryWeight(category: string, weight: number)`: 카테고리 가중치 설정
+  ```typescript
+  // 색상 매칭의 중요도를 2배로
+  system.setCategoryWeight('color', 2.0);
+  ```
+
+## 개발 가이드
 
 개발에 참여하고 싶으신가요? 훌륭합니다! 자주 사용하는 명령어를 소개합니다:
 
@@ -141,7 +162,7 @@ npm run lint
 npm run format
 ```
 
-## 🤔 작동 원리
+## 작동 원리
 
 EmbedDB는 벡터 기술로 유사성 검색을 구현합니다:
 
@@ -162,7 +183,7 @@ EmbedDB는 벡터 기술로 유사성 검색을 구현합니다:
    - 쿼리 캐시로 속도 향상
    - 배치 처리로 처리량 향상
 
-## 🧪 기술 상세
+## 기술 상세
 
 EmbedDB는 다음 기술을 활용합니다:
 
@@ -186,18 +207,18 @@ EmbedDB는 다음 기술을 활용합니다:
    - 런타임 타입 검사
    - 포괄적인 에러 처리
 
-## 📝 라이선스
+## 라이선스
 
 MIT 라이선스 - 자유롭게 사용하여 멋진 것을 만드세요!
 
-## 🙋‍♂️ 지원
+## 지원
 
 질문이나 제안이 있으신가요?
 - Issue 열기
 - PR 보내기
 
-함께 EmbedDB를 더 좋게 만들어요! 🌟
+함께 EmbedDB를 더 좋게 만들어요! 
 
-## 🌟 별표를 눌러주세요!
+## 별표를 눌러주세요!
 
 EmbedDB가 유용하다고 생각되시나요? 별표를 눌러주세요! 프로젝트의 발견 가능성이 높아지고 개발 동기부여가 됩니다!

@@ -1,4 +1,4 @@
-import { TagVectorSystem, Tag, IndexTag, ItemTags } from './index';
+import { TagVectorSystem, Tag, IndexTag, ItemTags, IFilter, QueryOptions } from './index';
 
 describe('TagVectorSystem', () => {
     let system: TagVectorSystem;
@@ -104,7 +104,7 @@ describe('TagVectorSystem', () => {
             system.addItemBatch(items);
             expect(system.getStats().totalItems).toBe(2);
 
-            system.removeTenders(['item1']);
+            system.removeItems(['item1']);
             expect(system.getStats().totalItems).toBe(1);
 
             const result = system.queryFirst([{ category: 'color', value: 'red', confidence: 1.0 }]);
@@ -145,10 +145,10 @@ describe('TagVectorSystem', () => {
                 { category: 'size', value: 'large', confidence: 1.0 }
             ];
 
-            const results = system.query(queryTags, { page: 1, pageSize: 1 });
+            const results = system.query(queryTags, { page: 1, size: 1 });
             expect(results.length).toBe(1);
             
-            const allResults = system.query(queryTags, { page: 1, pageSize: 10 });
+            const allResults = system.query(queryTags, { page: 1, size: 10 });
             expect(allResults.length).toBe(2);
         });
 
@@ -181,6 +181,61 @@ describe('TagVectorSystem', () => {
             system.clearQueryCache();
             const stats = system.getStats();
             expect(stats.memoryUsage.hasCachedQuery).toBe(false);
+        });
+
+        test('should handle filtering with metadata', () => {
+            type MetaType = { type: string };
+            const items: ItemTags<MetaType>[] = [
+                {
+                    id: 'item1',
+                    tags: [
+                        { category: 'color', value: 'red', confidence: 1.0 }
+                    ],
+                    meta: { type: 'A' }
+                },
+                {
+                    id: 'item2',
+                    tags: [
+                        { category: 'color', value: 'red', confidence: 1.0 }
+                    ],
+                    meta: { type: 'B' }
+                }
+            ];
+            system.addItemBatch(items);
+
+            const queryTags: Tag[] = [
+                { category: 'color', value: 'red', confidence: 1.0 }
+            ];
+
+            // Query with type A filter
+            const filterA: IFilter<MetaType> = (meta: MetaType) => meta.type === 'A';
+            const resultsA = system.query<MetaType>(queryTags, { filter: filterA } as QueryOptions<MetaType>);
+            expect(resultsA.length).toBe(1);
+            expect(resultsA[0].id).toBe('item1');
+
+            // Query with type B filter
+            const filterB: IFilter<MetaType> = (meta: MetaType) => meta.type === 'B';
+            const resultsB = system.query<MetaType>(queryTags, { filter: filterB } as QueryOptions<MetaType>);
+            expect(resultsB.length).toBe(1);
+            expect(resultsB[0].id).toBe('item2');
+
+            // Cache should work with same filter
+            const cachedResults = system.query<MetaType>(queryTags, { filter: filterA } as QueryOptions<MetaType>);
+            expect(cachedResults).toEqual(resultsA);
+        });
+
+        test('should handle undefined filter cases', () => {
+            const queryTags: Tag[] = [
+                { category: 'color', value: 'red', confidence: 1.0 }
+            ];
+
+            // Query without filter
+            const results1 = system.query(queryTags);
+            expect(results1.length).toBeGreaterThan(0);
+
+            // Query with undefined filter
+            const results2 = system.query(queryTags, { filter: undefined });
+            expect(results2).toEqual(results1);
         });
     });
 
