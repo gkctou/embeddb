@@ -1,6 +1,6 @@
 {
   "name": "embeddb",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A vector-based tag system for efficient similarity search and retrieval",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
