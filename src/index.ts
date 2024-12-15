@@ -370,4 +370,9 @@ export class TagVectorSystem<T = MetaValue> {
             }),
         );
     }
+
+    // 獲取指定 ID 的 meta 資料
+    getMeta(id: string): T | undefined {
+        return this.itemMeta.get(id);
+    }
 }
